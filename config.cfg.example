@@ -1,0 +1,19 @@
+[DEFAULT]
+API_URL=https://iot.aretas.ca/rest/
+
+API_USERNAME =
+API_PASSWORD =
+
+[API]
+batch_mode = True
+
+# the API reporting interval
+# even if we get packets more frequently, we only send once every
+# report_interval milliseconds
+# e.g. 10000 ms (10 seconds)
+report_interval = 20000
+
+[MQTT]
+mqtt_host = something.hostname.domain
+mqtt_port = 1883
+mqtt_topic = \#
