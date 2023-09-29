@@ -7,7 +7,7 @@ from message_harvester import MessageHarvester
 from mqtt_subscriber import MQTTChirpstackSubscriber
 
 # An example of using logging.basicConfig rather than logging.fileHandler()
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     handlers=[
                         RotatingFileHandler("AretasChirpstackBridge.log", maxBytes=50000000, backupCount=5)
                     ],

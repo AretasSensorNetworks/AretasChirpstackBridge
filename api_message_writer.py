@@ -18,6 +18,7 @@ class APIMessageWriter(Thread):
     This means that any new data arriving before the interval elapsed will overwrite what's
     sitting in the local buffer
     """
+
     def __init__(self, sig_event: Event):
 
         super(APIMessageWriter, self).__init__()
@@ -75,7 +76,8 @@ class APIMessageWriter(Thread):
 
             # determine if the polling interval has elapsed
             if (now_ - self.last_message_time) >= self.polling_interval:
-                self.logger.info("Sending {} messages to API".format(len(self.to_send)))
+                n_send = len(list(filter(lambda x: x.get_is_sent() is False, self.to_send.values())))
+                self.logger.info("Sending {} messages to API".format(n_send))
                 self.last_message_time = now_
                 # use the apiwriter
                 self.is_sending = True
@@ -109,13 +111,13 @@ class APIMessageWriter(Thread):
                             break
                         except requests.exceptions.ReadTimeout as rt:
                             self.logger.error("Read timeout error from requests:{}".format(rt))
-                            pass
+                            break
                         except requests.exceptions.ConnectTimeout as cte:
                             self.logger.error("Connection timeout error sending messages to API:{}".format(cte))
+                            break
                         # we need to be fairly aggressive with exception handling as we are in a thread
                         # doing network stuff and network things are buggy as heck
                         except Exception as e:
                             self.logger.error("Unknown exception trying to send messages to API:{}".format(e))
-                            pass
 
                 self.is_sending = False

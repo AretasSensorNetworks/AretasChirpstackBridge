@@ -83,6 +83,24 @@ thread shared queue. The queue is then emptied by a message harvester and API me
 
 API REST stuff, access control, etc. is handled by the AretasPythonAPI module (added as a git submodule)
 
+## CODECS and type mapping
+Ideally, we would just create CODECs in Chirpstack to map the various types to the correct sensor metadata types
+used in the Aretas API. However, it's nice to have CODECs available in a human readable format on the MQTT topics 
+for easier viewing / debugging / etc. 
+
+So have your CODEC emit a JSON object like:
+``{
+"temperature":24.5,
+"distance":500.0
+...
+}``
+
+Then, in the AretasChirpstackBridge config file (config.cfg) edit the line
+
+```sensor_type_mapping=battery:45,temp_c_internal:241,distance:220,rssi:134```
+
+And include your type names and the Aretas type ints.
+
 ## Config & Running
 
 The config.cfg file is pretty self-explanatory, just fill it out :)
