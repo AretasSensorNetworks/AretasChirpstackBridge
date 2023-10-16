@@ -25,11 +25,13 @@ if __name__ == "__main__":
     # this is a shared event handler among all the threads
     thread_sig_event = Event()
 
+
     def signal_handler(sig, frame):
         import sys
         print('You pressed Ctrl+C!')
         thread_sig_event.set()
         sys.exit(0)
+
 
     # define the signal handler for SIGINT
     signal.signal(signal.SIGINT, signal_handler)
@@ -39,7 +41,7 @@ if __name__ == "__main__":
 
     logger.info("MQTTT topic monitor thread starting:")
     mqtt_subscriber_thread = MQTTChirpstackSubscriber(mq_payload_queue,
-                                              thread_sig_event)
+                                                      thread_sig_event)
     mqtt_subscriber_thread.start()
     logger.info("MQTT topic monitor thread started.")
 
@@ -55,10 +57,3 @@ if __name__ == "__main__":
 
     mqtt_subscriber_thread.join()
     message_harvester_thread.join()
-
-
-
-
-
-
-

@@ -1,9 +1,9 @@
 import configparser
 import logging
+import time
 from multiprocessing import Event
 from queue import Queue
 from threading import Thread
-from AretasPythonAPI.utils import Utils as AretasUtils
 from sensor_message_item import SensorMessageItem
 import paho.mqtt.client as mqtt
 import json
@@ -27,6 +27,8 @@ class MQTTChirpstackSubscriber(Thread):
         config.read('config.cfg')
 
         self.payload_queue = payload_queue
+        self.thread_sleep = config.getboolean('DEFAULT', 'thread_sleep')
+        self.thread_sleep_time = config.getfloat('DEFAULT', 'thread_sleep_time')
 
         self.sig_event = sig_event
 
@@ -170,6 +172,9 @@ class MQTTChirpstackSubscriber(Thread):
         # mqttc.loop_forever()
 
         while True:
+            if self.thread_sleep is True:
+                time.sleep(self.thread_sleep_time)
+
             if self.sig_event.is_set():
                 self.logger.info("Exiting {}".format(self.__class__.__name__))
                 break

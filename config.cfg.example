@@ -4,6 +4,9 @@ API_URL=https://iot.aretas.ca/rest/
 API_USERNAME =
 API_PASSWORD =
 
+thread_sleep = True
+thread_sleep_time = 0.05
+
 [API]
 batch_mode = True
 
